@@ -1,7 +1,9 @@
 package com.example.controllers;
 
 import com.example.Data.Customer;
+import com.example.Data.CustomerRequestDTO;
 import com.example.Repositories.CustomerRepository;
+import com.example.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -14,26 +16,27 @@ import java.util.List;
 public class CustomerController {
 
     @Autowired
-    private CustomerRepository repository;
+    private CustomerService service;
 
     @PostMapping("/add")
-    public Customer addcustomer(@RequestBody  Customer customer){
-
-        return repository.save(customer);
+    public Customer addCustomer(@RequestBody CustomerRequestDTO dto) {
+        return service.addCustomer(dto);
     }
+
     @PostMapping("/add-multiple")
-    public List<Customer> addMultipleCustomers(@RequestBody List<Customer> customers) {
-        return repository.saveAll(customers);
+    public List<Customer> addMultipleCustomers(@RequestBody List<CustomerRequestDTO> dtos) {
+        return service.addMultipleCustomers(dtos);
     }
-    @GetMapping
-    public List<Customer> getall() {
-     return   repository.findAll();
-}
-  @DeleteMapping("/{id}")
-  public void delete(@PathVariable  Long id){
-   repository.deleteById(id);
-}
 
+    @GetMapping
+    public List<Customer> getAll() {
+        return service.getAll();
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
+    }
 
 
 }
